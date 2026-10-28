@@ -30,4 +30,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmail(email));
     }
 
+    @DeleteMapping("/{userId}")
+    public void deleteUser(@PathVariable String userId){
+        userService.deleteUser(userId);
+    }
+
 }
