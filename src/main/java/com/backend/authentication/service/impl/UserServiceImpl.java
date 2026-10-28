@@ -3,8 +3,10 @@ package com.backend.authentication.service.impl;
 import com.backend.authentication.dto.UserDto;
 import com.backend.authentication.entity.Provider;
 import com.backend.authentication.entity.User;
+import com.backend.authentication.exception.ResourceNotFoundException;
 import com.backend.authentication.repository.UserRepository;
 import com.backend.authentication.service.UserService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ public class UserServiceImpl implements UserService {
     private final ModelMapper modelMapper;
 
     @Override
+    @Transactional
     public UserDto createUser(UserDto userDto) {
         if(userDto.getEmail()==null || userDto.getEmail().isBlank()){
             throw new IllegalArgumentException("Email is empty");
@@ -35,7 +38,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDto getUserByEmail(String email) {
-        return null;
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User not found with email Id"));
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override
@@ -54,6 +58,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public Iterable<UserDto> getAllUsers() {
         return userRepository.findAll().stream().map(user -> modelMapper.map(user, UserDto.class)).toList();
     }
