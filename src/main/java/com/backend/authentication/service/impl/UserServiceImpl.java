@@ -13,6 +13,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import tools.jackson.databind.cfg.MapperBuilder;
 
+import java.time.Instant;
 import java.util.UUID;
 
 @Service
@@ -56,6 +57,7 @@ public class UserServiceImpl implements UserService {
         if(userDto.getProvider() != null) existingUser.setProvider(userDto.getProvider());
         if(userDto.getPassword() != null) existingUser.setPassword(userDto.getPassword());
         existingUser.setEnable(userDto.isEnable());
+        existingUser.setUpdatedAt(Instant.now());
 
         User updatedUser = userRepository.save(existingUser);
 
