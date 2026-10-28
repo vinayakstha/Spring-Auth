@@ -25,6 +25,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAllUsers());
     }
 
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserDto> getUserById(@PathVariable String userId){
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getUserById(userId));
+    }
+
     @GetMapping("/email/{email}")
     public ResponseEntity<UserDto> getUserByEmail(@PathVariable String email){
         return ResponseEntity.status(HttpStatus.OK).body(userService.getUserByEmail(email));
